@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
 
+    // ✅ URL de ton backend Render
+    const API_URL = "https://chatbot-taxi-agency.onrender.com";
+
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -18,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         chatInput.value = '';
 
         try {
-            // Get AI response
-            const response = await fetch('http://localhost:3000/ask', {
+            // Get AI response depuis ton backend
+            const response = await fetch(`${API_URL}/ask`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appendMessage(answer, 'bot');
 
             // Save the conversation to Google Sheets
-            await fetch('http://localhost:3000/save-response', {
+            await fetch(`${API_URL}/save-response`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
