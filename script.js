@@ -39,14 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             appendMessage(answer, 'bot');
 
-            // Save the conversation to Google Sheets
-            await fetch(`${API_URL}/save-response`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ question, answer })
-            });
+
 
         } catch (error) {
             console.error('Error:', error);
