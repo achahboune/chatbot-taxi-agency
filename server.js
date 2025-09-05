@@ -49,6 +49,13 @@ app.post('/ask', async (req, res) => {
 app.post('/save-response', async (req, res) => {
     const { question, answer } = req.body;
 
+    // Check if Google credentials are configured
+    if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+        console.log('Google Sheets credentials not configured. Skipping save.');
+        // Still return success to the frontend so the user experience is not interrupted.
+        return res.status(200).json({ success: true, message: 'Sheets not configured.' });
+    }
+
     try {
         const auth = new google.auth.GoogleAuth({
             credentials: {
@@ -59,10 +66,9 @@ app.post('/save-response', async (req, res) => {
         });
 
         const sheets = google.sheets({ version: 'v4', auth });
-        const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
         await sheets.spreadsheets.values.append({
-            spreadsheetId,
+            spreadsheetId: process.env.GOOGLE_SHEET_ID,
             range: 'Sheet1!A:C',
             valueInputOption: 'USER_ENTERED',
             resource: {
