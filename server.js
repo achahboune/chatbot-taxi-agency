@@ -2,10 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { google } = require('googleapis');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors()); // Enable All CORS Requests
 app.use(bodyParser.json());
 
 // A simple AI function to answer questions based on website content
