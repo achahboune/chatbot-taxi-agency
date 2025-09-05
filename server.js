@@ -10,6 +10,11 @@ const port = process.env.PORT || 3000;
 app.use(cors()); // Enable All CORS Requests
 app.use(bodyParser.json());
 
+// Health check endpoint
+app.get('/', (req, res) => {
+    res.status(200).send('Le cerveau du chatbot est en ligne et fonctionne !');
+});
+
 // A simple AI function to answer questions based on website content
 async function getAIResponse(question) {
     // In a real-world scenario, you would use a proper NLP/NLU engine.
@@ -31,6 +36,7 @@ async function getAIResponse(question) {
 
 
 app.post('/ask', async (req, res) => {
+    console.log('Received a question:', req.body.question);
     const { question } = req.body;
     if (!question) {
         return res.status(400).json({ error: 'La question est requise' });
